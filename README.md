@@ -123,6 +123,7 @@ Para usarlo:
 2. Escribe nombres de canciones
 3. Haz clic en "Descargar" y gestiona la lista desde ahí
 
+![Frontend](screenshots\frontend-view.jpeg)
 ---
 
 ## 🧱 Arquitectura del sistema
