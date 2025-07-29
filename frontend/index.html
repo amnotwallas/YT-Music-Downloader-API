@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>YT Downloader</title>
+  <style>
+    body { font-family: sans-serif; margin: 40px; }
+    input, textarea, button { font-size: 16px; padding: 8px; margin: 5px 0; width: 100%; }
+    button { cursor: pointer; }
+    .resultado { margin-top: 20px; }
+    .cancion { margin: 5px 0; }
+    .status { margin-top: 15px; font-weight: bold; color: #0066cc; }
+    .error { color: red; }
+    .success { color: green; }
+  </style>
+</head>
+<body>
+  <h1>🎵 YT Music Downloader</h1>
+
+  <label for="canciones">Escribe nombres de canciones (una por línea):</label>
+  <textarea id="canciones" rows="5" placeholder="Adele - Hello\nColdplay - Yellow"></textarea>
+
+  <button onclick="descargarCanciones()">Descargar Canciones</button>
+
+  <div id="status" class="status"></div>
+
+  <h2>Canciones disponibles</h2>
+  <button onclick="cargarLista()">🔄 Actualizar lista</button>
+  <div id="lista" class="resultado"></div>
+
+  <script>
+    const API = "http://localhost:8000";
+    const STATUS = document.getElementById("status");
+
+    async function descargarCanciones() {
+      const texto = document.getElementById("canciones").value.trim();
+      if (!texto) {
+        STATUS.textContent = "❌ Escribe al menos una canción.";
+        STATUS.className = "status error";
+        return;
+      }
+
+      const nombres = texto.split("\\n").filter(linea => linea.trim() !== "");
+
+      STATUS.textContent = "⏳ Descargando canciones...";
+      STATUS.className = "status";
+
+      try {
+        const res = await fetch(`${API}/descargar`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ canciones: nombres })
+        });
+
+        const data = await res.json();
+        console.log(data);
+
+        STATUS.textContent = "✅ Descarga finalizada. Actualizando lista...";
+        STATUS.className = "status success";
+
+        setTimeout(cargarLista, 2000);
+      } catch (err) {
+        console.error(err);
+        STATUS.textContent = "❌ Error al descargar canciones.";
+        STATUS.className = "status error";
+      }
+    }
+
+    async function cargarLista() {
+      try {
+        const res = await fetch(`${API}/descargas`);
+        const data = await res.json();
+        const contenedor = document.getElementById("lista");
+        contenedor.innerHTML = "";
+
+        if (data.archivos && data.archivos.length > 0) {
+          data.archivos.forEach(nombre => {
+            const link = document.createElement("a");
+            link.href = `${API}/descargas/${encodeURIComponent(nombre)}`;
+            link.textContent = `🎧 ${nombre}`;
+            link.className = "cancion";
+            link.download = nombre;
+            link.target = "_blank";
+            contenedor.appendChild(link);
+            contenedor.appendChild(document.createElement("br"));
+          });
+        } else {
+          contenedor.textContent = "No hay canciones descargadas.";
+        }
+      } catch (e) {
+        document.getElementById("lista").textContent = "❌ Error al cargar lista.";
+      }
+    }
+
+    // 🔄 Auto recargar la lista cada 10 segundos
+    setInterval(cargarLista, 10000);
+
+    // Cargar al inicio
+    cargarLista();
+  </script>
+</body>
+</html>
