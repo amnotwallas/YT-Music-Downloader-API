@@ -21,11 +21,23 @@ API REST construida con **FastAPI** que permite buscar canciones por nombre en Y
 
 ## ⚙️ Instalación de dependencias
 
+1. Clona este repositorio:
+
 ```bash
-git clone https://github.com/tuusuario/yt-music-api.git
+git clone https://github.com/amnotwallas/YT-Music-Downloader-API.git
 cd yt-music-api
+```
+
+2. Crea un entorno virtual (opcional pero recomendado):
+
+```bash
 python -m venv venv
 source venv/bin/activate  # En Windows: venv\Scripts\activate
+```
+
+3. Instala las dependencias:
+
+```bash
 pip install -r requirements.txt
 ```
 
