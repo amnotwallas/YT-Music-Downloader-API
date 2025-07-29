@@ -75,14 +75,82 @@
 
         if (data.archivos && data.archivos.length > 0) {
           data.archivos.forEach(nombre => {
-            const link = document.createElement("a");
-            link.href = `${API}/descargas/${encodeURIComponent(nombre)}`;
-            link.textContent = `🎧 ${nombre}`;
-            link.className = "cancion";
-            link.download = nombre;
-            link.target = "_blank";
-            contenedor.appendChild(link);
-            contenedor.appendChild(document.createElement("br"));
+            const fila = document.createElement("div");
+            fila.className = "cancion";
+            fila.style.display = "flex";
+            fila.style.alignItems = "center";
+            fila.style.justifyContent = "space-between";
+            fila.style.marginBottom = "10px";
+
+            // Nombre de la canción
+            const label = document.createElement("span");
+            label.textContent = `🎧 ${nombre}`;
+
+            // Estilos comunes
+            const estiloBoton = (btn) => {
+              btn.style.color = "white";
+              btn.style.padding = "8px 16px";
+              btn.style.marginRight = "10px";
+              btn.style.border = "none";
+              btn.style.cursor = "pointer";
+              btn.style.borderRadius = "5px";
+              btn.style.fontSize = "14px";
+              btn.style.textAlign = "center";
+              btn.style.minWidth = "130px"; // 🔁 Fuerza ancho mínimo
+              btn.style.display = "inline-block"; // ✅ Muy importante para <a>
+              btn.style.boxSizing = "border-box";
+            };
+
+           // Botón de descarga (como <button> en lugar de <a>)
+            const btnDescargar = document.createElement("button");
+            btnDescargar.textContent = "⬇️ Descargar";
+
+            estiloBoton(btnDescargar);
+            btnDescargar.style.backgroundColor = "#4CAF50";
+
+            // Evento descargar
+            btnDescargar.onclick = async () => {
+              try {
+                const link = document.createElement("a");
+                link.href = `${API}/descargas/${encodeURIComponent(nombre)}`;
+                link.download = nombre;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              } catch (err) {
+                alert("❌ No se pudo iniciar la descarga.");
+              }
+            };
+
+            // Botón de eliminar
+            const btnEliminar = document.createElement("button");
+            btnEliminar.textContent = "🗑️ Eliminar";
+
+            estiloBoton(btnEliminar);
+            btnEliminar.style.backgroundColor = "#f44336";
+
+            // Evento eliminar
+            btnEliminar.onclick = async () => {
+              const confirmacion = confirm(`¿Eliminar "${nombre}"?`);
+              if (!confirmacion) return;
+
+              const res = await fetch(`${API}/descargas/${encodeURIComponent(nombre)}`, {
+                method: "DELETE"
+              });
+
+              const resultado = await res.json();
+              alert(resultado.mensaje || "Eliminado");
+              cargarLista();
+            };
+
+
+            const acciones = document.createElement("div");
+            acciones.appendChild(btnDescargar);
+            acciones.appendChild(btnEliminar);
+
+            fila.appendChild(label);
+            fila.appendChild(acciones);
+            contenedor.appendChild(fila);
           });
         } else {
           contenedor.textContent = "No hay canciones descargadas.";
@@ -91,6 +159,7 @@
         document.getElementById("lista").textContent = "❌ Error al cargar lista.";
       }
     }
+
 
     // 🔄 Auto recargar la lista cada 10 segundos
     setInterval(cargarLista, 10000);
