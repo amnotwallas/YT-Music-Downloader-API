@@ -23,7 +23,7 @@ Una API REST creada con FastAPI que permite buscar canciones en YouTube, descarg
 1. Clona este repositorio:
 
 ```bash
-git clone https://github.com/tuusuario/yt-music-api.git
+git clone https://github.com/amnotwallas/YT-Music-Downloader-API.git
 cd yt-music-api
 ```
 
