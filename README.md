@@ -46,16 +46,19 @@ pip install -r requirements.txt
 ## 🎧 Instalación de FFMPEG
 
 ### Windows
-1. Descargar desde: https://ffmpeg.org/download.html  
+
+1. Descargar desde: <https://ffmpeg.org/download.html>  
 2. Extraer en `C:\ffmpeg`
 3. Agrega `C:\ffmpeg\bin` al `PATH` del sistema
 
 ### macOS
+
 ```bash
 brew install ffmpeg
 ```
 
 ### Linux
+
 ```bash
 sudo apt update
 sudo apt install ffmpeg
@@ -124,6 +127,7 @@ Para usarlo:
 3. Haz clic en "Descargar" y gestiona la lista desde ahí
 
 ![Frontend](screenshots\frontend-view.jpeg)
+
 ---
 
 ## 🧱 Arquitectura del sistema
