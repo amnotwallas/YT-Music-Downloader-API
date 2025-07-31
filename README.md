@@ -117,8 +117,8 @@ curl -X POST http://localhost:8000/descargar \
 ```
 
 ### 🌐 Usando HTML (interfaz visual)
-
-Este repositorio incluye un archivo `index.html` ubicado en la carpeta `/frontend`, que sirve como interfaz web para probar la API fácilmente desde el navegador.
+>[!TIP]
+>Este repositorio incluye un archivo `index.html` ubicado en la carpeta `/frontend`, que sirve como interfaz web para probar la API fácilmente desde el navegador.
 
 Para usarlo:
 
