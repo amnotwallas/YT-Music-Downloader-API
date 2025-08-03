@@ -94,7 +94,9 @@ def borrar_archivo(nombre_archivo: str):
 """
 @app.delete("/descargas")
 def borrar_todos_los_archivos():
-    
+    # Check if the download directory exists
+    if not os.path.exists(DOWNLOAD_DIR):
+        raise HTTPException(status_code=404, detail="Directorio de descargas no encontrado")
     archivos_eliminados = []
     for archivo in os.listdir(DOWNLOAD_DIR):
         if archivo.endswith(".mp3"):
