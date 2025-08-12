@@ -31,7 +31,7 @@ cd yt-music-api
 2. Crea un entorno virtual (opcional pero recomendado):
 
 ```bash
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate  # En Windows: venv\Scripts\activate
 ```
 
